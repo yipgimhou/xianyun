@@ -37,14 +37,29 @@ export default {
       },
       // 表单规则
       rules: {
-          username:[{validate:validateUsername,trigger:'blur'}]
+        username: [{ validator: validateUsername, trigger: "blur" }],
+        password: [
+          { required: true, message: "请输入密码", trigger: "blur" },
+          { min: 3, message: "至少为3位数密码", trigger: "blur" }
+        ]
       }
     };
   },
   methods: {
     // 提交登录
     handleLoginSubmit() {
-      console.log(this.form);
+      this.$refs.form.validate(valid=>{
+          if(valid){
+              this.$store.commit('user/login',this.form)
+              .then(res=>{
+                  this.$message.success('登录成功')
+                  this.$router.push('/')
+              })
+              .catch(res=>{
+                  this.$message.warning('登录失败')
+              })
+          }
+      })
     }
   }
 };
