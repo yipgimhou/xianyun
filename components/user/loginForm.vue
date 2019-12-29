@@ -1,11 +1,11 @@
 <template>
   <el-form :model="form" ref="form" :rules="rules" class="form">
-    <el-form-item class="form-item">
-      <el-input placeholder="用户名/手机"></el-input>
+    <el-form-item class="form-item" prop="username">
+      <el-input placeholder="用户名/手机" v-model="form.username"></el-input>
     </el-form-item>
 
-    <el-form-item class="form-item">
-      <el-input placeholder="密码" type="password"></el-input>
+    <el-form-item class="form-item" prop="password">
+      <el-input placeholder="密码" type="password" v-model="form.password"></el-input>
     </el-form-item>
 
     <p class="form-text">
@@ -19,11 +19,26 @@
 <script>
 export default {
   data() {
+    var validateUsername = (rule, value, callback) => {
+      const reg = /^1[3-9][0-9]{9}$/;
+      if (value === "") {
+        callback(new Error("手机号不能为空"));
+      } else if (reg.test(value)) {
+        callback();
+      } else {
+        callback(new Error("请输入正确的手机号"));
+      }
+    };
     return {
       // 表单数据
-      form: {},
+      form: {
+        username: "",
+        password: ""
+      },
       // 表单规则
-      rules: {}
+      rules: {
+          username:[{validate:validateUsername,trigger:'blur'}]
+      }
     };
   },
   methods: {
