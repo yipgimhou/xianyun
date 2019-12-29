@@ -30,6 +30,9 @@ mounted(){
     var {data} = res.data
     this.pics = data
   })
+},
+methods:{
+  
 }
 }
 </script>
