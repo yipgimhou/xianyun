@@ -1,5 +1,5 @@
 <template>
-  <el-form :model="form" ref="form" :rules="rules" class="form">
+  <el-form :model="form"   :rules="rules" class="form">
     <el-form-item class="form-item" prop="username">
       <el-input placeholder="用户名手机" v-model="form.username"></el-input>
     </el-form-item>
@@ -121,6 +121,7 @@ export default {
           this.$alert("注册成功，请前往登录页面进行登录", "注册成功", {
           confirmButtonText: "确定"
         });
+        this.$emit('regisitersuccess')
       }).catch(res=>{
           this.$message.warning('注册失败，请检查确认输入信息是否正确')
       })

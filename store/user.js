@@ -4,20 +4,21 @@ export const state= {
 
 export const mutations= {
     setuserInfo(state,data){
-        state.name = data
+        state.userInfo = data
     }
 }
 
 export const actions={
     login({commit},data){
-        this.$axios({
+       return this.$axios({
             url:'/accounts/login',
             method:'POST',
             data:data
         })
         .then(res=>{
             const user = res.data
-            commit('userInfo',user)
+            commit('setuserInfo',user)
+            return true
         })
         .catch(res=>{
             this.$message.warning('登录失败，用户信息有误')

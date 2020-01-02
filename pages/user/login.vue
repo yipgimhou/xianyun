@@ -17,7 +17,7 @@
         <LoginForm v-if="currentTab===0"></LoginForm>
 
         <!-- 注册功能组件 -->
-        <RegisiterForm v-if="currentTab===1"></RegisiterForm>
+        <RegisiterForm v-if="currentTab===1" @regisitersuccess='regisitersuccess'></RegisiterForm>
       </div>
     </el-row>
   </div>
@@ -39,6 +39,9 @@ export default {
   methods: {
     handleChangeTab(index) {
       this.currentTab = index;
+    },
+    regisitersuccess(){
+      this.currentTab=0
     }
   }
 };

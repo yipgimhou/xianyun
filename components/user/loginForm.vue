@@ -50,12 +50,10 @@ export default {
     handleLoginSubmit() {
       this.$refs.form.validate(valid=>{
           if(valid){
-              this.$store.commit('user/login',this.form)
-              .then(res=>{
+              this.$store.dispatch('user/login',this.form).then(res=>{
                   this.$message.success('登录成功')
                   this.$router.push('/')
-              })
-              .catch(res=>{
+              }).catch(res=>{
                   this.$message.warning('登录失败')
               })
           }
