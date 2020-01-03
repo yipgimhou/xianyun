@@ -4,7 +4,7 @@
       <!-- 顶部过滤列表 -->
       <div class="flights-content">
         <!-- 过滤条件 -->
-        <div></div>
+        <FlightsFilters :data='cityInfo' :info='options'/>
 
         <!-- 航班头部布局 -->
         <FlightsListHead />
@@ -24,16 +24,20 @@
 <script>
 import FlightsListHead from "@/components/air/flightsListHead.vue";
 import FlightsListItem from "@/components/air/flightsItem.vue";
+import FlightsFilters from '@/components/air/flightsFilters.vue'
 export default {
     data(){
         return{
             flightsInfo:{},
-            DataList:[]
+            DataList:[],
+            cityInfo:{},
+            options:{}
         }
     },
   components: {
     FlightsListHead,
-    FlightsListItem
+    FlightsListItem,
+    FlightsFilters
   },
   mounted() {
     this.$axios({
@@ -43,6 +47,8 @@ export default {
       console.log(res);
       this.flightsInfo = res.data;
       this.DataList = this.flightsInfo.flights
+      this.cityInfo = this.flightsInfo.info
+      this.options = this.flightsInfo.options
     });
   }
 };
