@@ -4,13 +4,13 @@
       <!-- 顶部过滤列表 -->
       <div class="flights-content">
         <!-- 过滤条件 -->
-        <FlightsFilters :data='cityInfo' :info='options'/>
+        <FlightsFilters  :data='cacheInfo' @setDataList='setDataList'/>
 
         <!-- 航班头部布局 -->
         <FlightsListHead />
 
         <!-- 航班信息 -->
-        <FlightsListItem v-for="(item,index) in DataList" :key="index" :data='item'/>
+        <FlightsListItem v-for="(item,index) in flightsInfo.flights" :key="index" :data='item'/>
       </div>
 
       <!-- 侧边栏 -->
@@ -28,10 +28,14 @@ import FlightsFilters from '@/components/air/flightsFilters.vue'
 export default {
     data(){
         return{
-            flightsInfo:{},
-            DataList:[],
-            cityInfo:{},
-            options:{}
+            flightsInfo:{
+              info:{},
+              options:{}
+            },
+            cacheInfo:{
+              info:{},
+              options:{}
+            }
         }
     },
   components: {
@@ -46,10 +50,18 @@ export default {
     }).then(res => {
       console.log(res);
       this.flightsInfo = res.data;
-      this.DataList = this.flightsInfo.flights
-      this.cityInfo = this.flightsInfo.info
-      this.options = this.flightsInfo.options
+      this.cacheInfo = {...res.data};
     });
+  },
+  methods:{
+    setDataList(arr){
+      this.flightsInfo.flights = arr;
+    }
+  },
+  computed:{
+    DataList(){
+      if(!this.flightsInfo.flights) return []
+    }
   }
 };
 </script>
