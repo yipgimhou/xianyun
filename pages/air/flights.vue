@@ -7,10 +7,10 @@
         <div></div>
 
         <!-- 航班头部布局 -->
-        <FlightsListHead/>
+        <FlightsListHead />
 
         <!-- 航班信息 -->
-        <FlightsListItem/>
+        <FlightsListItem v-for="(item,index) in DataList" :key="index" :data='item'/>
       </div>
 
       <!-- 侧边栏 -->
@@ -22,13 +22,29 @@
 </template>
 
 <script>
-import FlightsListHead from "@/components/air/flightsListHead.vue"
-import FlightsListItem from "@/components/air/flightsItem.vue"
+import FlightsListHead from "@/components/air/flightsListHead.vue";
+import FlightsListItem from "@/components/air/flightsItem.vue";
 export default {
-    components:{
-        FlightsListHead,
-        FlightsListItem
-    }
+    data(){
+        return{
+            flightsInfo:{},
+            DataList:[]
+        }
+    },
+  components: {
+    FlightsListHead,
+    FlightsListItem
+  },
+  mounted() {
+    this.$axios({
+      url: "/airs",
+      params: this.$route.query
+    }).then(res => {
+      console.log(res);
+      this.flightsInfo = res.data;
+      this.DataList = this.flightsInfo.flights
+    });
+  }
 };
 </script>
 

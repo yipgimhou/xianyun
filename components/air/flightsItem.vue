@@ -4,42 +4,51 @@
       <!-- 显示的机票信息 -->
       <el-row type="flex" align="middle" class="flight-info">
         <el-col :span="6">
-          <span>东航</span> MU5316
+          <span>{{data.airline_name}}</span>
+          {{data.flight_no}}
         </el-col>
         <el-col :span="12">
           <el-row type="flex" justify="space-between" class="flight-info-center">
             <el-col :span="8" class="flight-airport">
-              <strong>20:30</strong>
-              <span>白云机场T1</span>
+              <strong>{{data.dep_time}}</strong>
+              <span>{{data.org_airport_name}}{{data.org_airport_quay}}</span>
             </el-col>
             <el-col :span="8" class="flight-time">
-              <span>2时20分</span>
+              <span>{{spendtime}}</span>
             </el-col>
             <el-col :span="8" class="flight-airport">
-              <strong>22:50</strong>
-              <span>虹桥机场T2</span>
+              <strong>{{data.arr_time}}</strong>
+              <span>{{data.dst_airport_name}}{{data.dst_airport_quay}}</span>
             </el-col>
           </el-row>
         </el-col>
         <el-col :span="6" class="flight-info-right">
           ￥
-          <span class="sell-price">810</span>起
+          <span class="sell-price">{{data.seat_infos[0].org_settle_price_child}}</span>起
         </el-col>
       </el-row>
     </div>
-    <div class="flight-recommend">
+    <div class="flight-recommend" v-if="isshow">
       <!-- 隐藏的座位信息列表 -->
-      <el-row type="flex" justify="space-between" align="middle" v-if="isshow">
+      <el-row type="flex" justify="space-between" align="middle">
         <el-col :span="4">低价推荐</el-col>
         <el-col :span="20">
-          <el-row type="flex" justify="space-between" align="middle" class="flight-sell">
+          <el-row
+            type="flex"
+            justify="space-between"
+            align="middle"
+            class="flight-sell"
+            v-for="(item,index) in data.seat_infos"
+            :key="index"
+          >
             <el-col :span="16" class="flight-sell-left">
-              <span>经济舱</span> | 上海一诺千金航空服务有限公司
+              <span>{{item.group_name}}</span>
+              | {{item.supplierName}}
             </el-col>
-            <el-col :span="5" class="price">￥1345</el-col>
+            <el-col :span="5" class="price">￥{{item.par_price}}</el-col>
             <el-col :span="3" class="choose-button">
               <el-button type="warning" size="mini">选定</el-button>
-              <p>剩余：83</p>
+              <p>剩余：{{item.discount}}</p>
             </el-col>
           </el-row>
         </el-col>
@@ -51,33 +60,47 @@
 <script>
 export default {
   //父传子接收参数
-  props:{
+  props: {
     data: {
       type: Object,
-      default: {}
+      default() {
+        return {};
+      }
     }
   },
   data() {
     return {
-      isshow: false,
-      flightsInfo: {}
+      isshow: false
     };
+  },
+  computed: {
+    spendtime() {
+      //先将出发时间和到达时间的时和分切割出来
+      var arr = this.data.arr_time;
+      var dep = this.data.dep_time;
+      const end = arr.split(":");
+      const start = dep.split(":");
+      //将出发时间和到达时间转化为分钟单位
+      var endtime = end[0] * 60 + +end[1];
+      var starttime = start[0] * 60 + +start[1];
+      //判断到达时间是否为第二天
+      if (starttime > endtime) {
+        endtime = endtime + 24 * 60;
+      }
+      //计算相隔共多少分钟
+      var distime = endtime - starttime;
+      //将分钟差转化为时分格式
+      var hours = Math.floor(distime / 60);
+      var mins = distime % 60;
+      return `${hours}时${mins}分`
+    }
   },
   methods: {
     openit() {
       this.isshow = !this.isshow;
     }
   },
-  mounted() {
-      console.log(this)
-    // this.$axios({
-    //   url: "/airs",
-    //   params: this.$route.query
-    // }).then(res => {
-    //   console.log(res);
-    //   this.flightsInfo = res.data.data;
-    // });
-  }
+  mounted() {}
 };
 </script>
 
