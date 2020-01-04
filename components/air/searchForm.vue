@@ -213,6 +213,8 @@ export default {
         path:'/air/flights',
         query:this.form
       })
+      //添加到本地存储，历史记录中去
+      this.$store.commit("air/setHistory", this.form);
     }
   },
   mounted() {}
