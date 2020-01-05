@@ -2,9 +2,9 @@
   <div class="main">
     <div class="air-column">
       <h2>乘机人</h2>
-      <el-form class="member-info" :model="data">
+      <el-form class="member-info">
         <div class="member-info-item" v-for="(item,index) in users" :key="index">
-          <el-form-item label="乘机人类型" prop="users.username">
+          <el-form-item label="乘机人类型">
             <el-input placeholder="姓名" class="input-with-select" v-model="item.username">
               <el-select slot="prepend" value="1" placeholder="请选择">
                 <el-option label="成人" value="1"></el-option>
@@ -12,7 +12,7 @@
             </el-input>
           </el-form-item>
 
-          <el-form-item label="证件类型" prop="users.id">
+          <el-form-item label="证件类型">
             <el-input placeholder="证件号码" class="input-with-select" v-model="item.id">
               <el-select slot="prepend" value="1" placeholder="请选择">
                 <el-option label="身份证" value="1" :checked="true"></el-option>
@@ -48,12 +48,12 @@
     <div class="air-column">
       <h2>联系人</h2>
       <div class="contact">
-        <el-form label-width="60px" prop="contactName">
+        <el-form label-width="60px">
           <el-form-item label="姓名">
             <el-input v-model="data.contactName"></el-input>
           </el-form-item>
 
-          <el-form-item label="手机" prop="contactPhone">
+          <el-form-item label="手机">
             <el-input placeholder="请输入内容" v-model="data.contactPhone">
               <template slot="append">
                 <el-button @click="handleSendCaptcha">发送验证码</el-button>
@@ -61,13 +61,14 @@
             </el-input>
           </el-form-item>
 
-          <el-form-item label="验证码" prop="captcha">
+          <el-form-item label="验证码">
             <el-input v-model="data.captcha"></el-input>
           </el-form-item>
         </el-form>
         <el-button type="warning" class="submit" @click="handleSubmit">提交订单</el-button>
       </div>
     </div>
+    <span>{{allprice}}</span>
   </div>
 </template>
 
@@ -90,6 +91,26 @@ export default {
         }
       ]
     };
+  },
+  computed: {
+    allprice() {
+      if (!this.data.seat_infos.org_settle_price) return;
+      //设置总价初始为0
+      var price = 0;
+      //获取乘客数量
+      var person = this.users.length;
+      //计算所有成人机票价格
+      price += this.data.seat_infos.org_settle_price * person;
+      //遍历保险数组，计算乘客购买的保险价格
+      price += this.data.insurances.length * 30;
+      // this.data.insurances.forEach(e => {
+      //   price += e.price*person
+      // });
+      //计算所有乘客的燃油费
+      price += this.data.airport_tax_audlet * person;
+      this.$store.commit("air/setAllPrice", price);
+      return '';
+    }
   },
   methods: {
     // 添加乘机人
@@ -130,13 +151,15 @@ export default {
     },
     //选择保险
     handleInsurances(id) {
-      //假如选择的该保险已存在
-      if (this.insurances.indexOf(id) > -1) {
-        //除去第一个后
-        var arr = this.insurances.slice(0);
-        //删除已存在的
-        arr.splice(this.insurances.indexOf(id),1);
-        this.insurances = arr;
+      if (this.insurances) {
+        //假如选择的该保险已存在
+        if (this.insurances.indexOf(id) > -1) {
+          //除去第一个后
+          var arr = this.insurances.slice(0);
+          //删除已存在的
+          arr.splice(this.insurances.indexOf(id), 1);
+          this.insurances = arr;
+        }
       }
     },
 

@@ -1,7 +1,7 @@
 export const state = () => ({
     // 历史搜索记录
     history: [],
-    // allPrice: 0
+    allPrice: 0
 });
 
 export const mutations = {
@@ -10,7 +10,7 @@ export const mutations = {
         state.history.unshift(data);
     },
     // 存储总价格
-    // setAllPrice(state, price){
-    //     state.allPrice = price;
-    // }
+    setAllPrice(state, price){
+        state.allPrice = price;
+    }
 }

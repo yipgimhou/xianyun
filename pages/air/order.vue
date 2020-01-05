@@ -7,13 +7,16 @@
       </div>
 
       <!-- 侧边栏 -->
-      <div class="aside"></div>
+      <div class="aside">
+        <OrderAside :data="form" @setallprice="setallprice" />
+      </div>
     </el-row>
   </div>
 </template>
 
 <script>
 import OrderForm from "@/components/air/orderForm.vue";
+import OrderAside from "@/components/air/orderaside.vue";
 export default {
   data() {
     return {
@@ -25,8 +28,10 @@ export default {
         captcha: "",
         invoice: false,
         seat_xid: "",
-        air: 0
-      }
+        air: 0,
+        seat_infos: {}
+      },
+      allprice:0
     };
   },
   mounted() {
@@ -36,12 +41,19 @@ export default {
         seat_xid: this.$route.query.seat_xid
       }
     }).then(res => {
-      console.log(res)
+      console.log(res);
+      this.form = res.data;
       this.form.insurances = res.data.insurances;
     });
   },
+  methods:{
+    setallprice(price){
+      this.allprice = price;
+    }
+  },
   components: {
-    OrderForm
+    OrderForm,
+    OrderAside
   }
 };
 </script>
