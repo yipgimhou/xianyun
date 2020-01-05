@@ -23,7 +23,7 @@
       <nuxt-link
         v-for="(item,index) in $store.state.air.history"
         :key="index"
-        to="`/air/flights?departCity=${item.departCity}&departCode=${item.departCode}&destCity=${item.destCity}&destCode=${item.destCode}&departDate=${item.departDate}`"
+        :to="`/air/flights?departCity=${item.departCity}&departCode=${item.departCode}&destCity=${item.destCity}&destCode=${item.destCode}&departDate=${item.departDate}`"
       >
         <el-row type="flex" justify="space-between" align="middle" class="history-item">
           <div class="air-info">

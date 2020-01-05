@@ -17,7 +17,7 @@
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
           :current-page="pageIndex"
-          :page-sizes="[4, 8, 12, 16]"
+          :page-sizes="[5, 10, 15, 20]"
           :page-size="pageSize"
           layout="total, sizes, prev, pager, next, jumper"
           :total="total"
@@ -52,7 +52,7 @@ export default {
       // 当前的页面
       pageIndex: 1,
       // 当前的条数
-      pageSize: 4,
+      pageSize: 5,
       // 总条数
       total: 0
     };
@@ -73,6 +73,20 @@ export default {
       this.cacheInfo = { ...res.data };
       this.total = res.data.total;
     });
+  },
+  watch:{
+    $route(){
+      this.$axios({
+      url: "/airs",
+      params: this.$route.query
+    }).then(res => {
+      console.log(res);
+      this.flightsInfo = res.data;
+      this.cacheInfo = { ...res.data };
+      this.total = res.data.total;
+      this.pageIndex = 1;
+    });
+    }
   },
   methods: {
     setDataList(arr) {

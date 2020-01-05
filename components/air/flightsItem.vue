@@ -47,7 +47,11 @@
             </el-col>
             <el-col :span="5" class="price">￥{{item.par_price}}</el-col>
             <el-col :span="3" class="choose-button">
-              <el-button type="warning" size="mini">选定</el-button>
+              <el-button
+                type="warning"
+                size="mini"
+                @click="handleLinkOrder(data.id, item.seat_xid)"
+              >选定</el-button>
               <p>剩余：{{item.discount}}</p>
             </el-col>
           </el-row>
@@ -92,12 +96,21 @@ export default {
       //将分钟差转化为时分格式
       var hours = Math.floor(distime / 60);
       var mins = distime % 60;
-      return `${hours}时${mins}分`
+      return `${hours}时${mins}分`;
     }
   },
   methods: {
     openit() {
       this.isshow = !this.isshow;
+    },
+    handleLinkOrder(id, seat_xid) {
+      this.$router.push({
+        path: "/air/order",
+        query: {
+          id,
+          seat_xid
+        }
+      });
     }
   },
   mounted() {}
