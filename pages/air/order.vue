@@ -8,7 +8,7 @@
 
       <!-- 侧边栏 -->
       <div class="aside">
-        <OrderAside :data="form" @setallprice="setallprice" />
+        <OrderAside :data="form"/>
       </div>
     </el-row>
   </div>

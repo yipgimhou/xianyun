@@ -13,5 +13,10 @@ export default function({$axios, redirect}){
         if(statusCode === 400){
             Message.warning({message});
         }
+
+        if(statusCode === 4001){
+            Message.error('登录已过期，请重新登录','提示')
+            nuxt.redirect(200,'/user/login')
+        }
     })
 }

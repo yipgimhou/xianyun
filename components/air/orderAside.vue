@@ -51,12 +51,12 @@ export default {
           return{}
       }
     },
-    allprice:{
-        type:Number,
-        default(){
-            return 0 
-        }
-    }
+    // allprice:{
+    //     type:Number,
+    //     default(){
+    //         return 0 
+    //     }
+    // }
   },
 
   computed: {
