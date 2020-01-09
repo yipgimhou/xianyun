@@ -6,22 +6,21 @@
       </el-col>
       <el-col :span="17" class="nav_item">
         <Postsearch/>
-        <Postarticle/>
+        <Postlist/>
       </el-col>
     </el-row>
-    
   </div>
 </template>
 
 <script>
 import LeftNav from "@/components/post/left_nav.vue"
 import Postsearch from "@/components/post/post_search.vue"
-import Postarticle from "@/components/post/post_article.vue"
+import Postlist from "@/components/post/post_list.vue"
 export default {
 components:{
   LeftNav,
   Postsearch,
-  Postarticle
+  Postlist
 }
 }
 </script>
