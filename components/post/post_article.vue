@@ -6,40 +6,55 @@
         <el-breadcrumb-item>攻略详情</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
-    <div class="title">
-      <h1>塞班贵？一定是你的打开方式不对！6000块玩转塞班</h1>
-    </div>
-    <div class="info">
-      <span class="article_time">攻略：2019-05-22 10:57</span>
-      <span class="article_time">阅读：12833</span>
-    </div>
-    <div
-      class="article_content"
-    >大家对塞班岛总存在着这样的误解，知道它是美属地盘，就理所当然地觉得这里的花费一定很高，花费高有高的玩法，那如果只有6000块的预算呢？要怎么玩？关于旅行这件事，我们要让钱花得更有道理，收下这份攻略，带你6000块花式玩转塞班。</div>
-    <div class="footer_icon">
-      <div class="commend">
-        <i class="el-icon-edit-outline"></i>
-        <span>评论(100)</span>
+    <div v-for="(item,index) in data.data" :key="index">
+      <div class="title">
+        <h1>{{item.title}}</h1>
       </div>
-      <div class="collect">
-        <i class="el-icon-star-off"></i>
-        <span>收藏</span>
+      <div class="info">
+        <span class="article_time">攻略：{{item.city.created_at}}</span>
+        <span class="article_time">阅读：{{item.watch}}</span>
       </div>
-      <div class="share">
-        <i class="el-icon-share"></i>
-        <span>分享</span>
-      </div>
-      <div class="like">
-        <span class="iconfont icon-dianzan"></span>
-        <span>点赞(74)</span>
+      <div class="article_content" v-html="item.content"></div>
+      <div class="footer_icon">
+        <div class="commend">
+          <i class="el-icon-edit-outline"></i>
+          <span>评论({{item.comments.length}})</span>
+        </div>
+        <div class="collect">
+          <i class="el-icon-star-off"></i>
+          <span>收藏</span>
+        </div>
+        <div class="share">
+          <i class="el-icon-share"></i>
+          <span>分享</span>
+        </div>
+        <div class="like">
+          <span class="iconfont icon-dianzan"></span>
+          <span>{{item.like===null?"点赞":`点赞${item.like}`}}</span>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import "@/assets/font_vr5g0eiyowc/iconfont.css"
-export default {};
+import "@/assets/font_vr5g0eiyowc/iconfont.css";
+export default {
+  props: {
+    data: {
+      type: Object,
+      default() {
+        return {};
+      }
+    }
+  },
+  data() {
+    return {};
+  },
+  mounted() {
+    // console.log(this.data.data.title)
+  }
+};
 </script>
 
 <style lang='less' scoped>
@@ -70,25 +85,31 @@ h1 {
 .article_content {
   width: 700px;
   font-size: 16px;
+  /deep/img {
+    max-width: 700px;
+  }
 }
-.footer_icon{
+.footer_icon {
   display: flex;
   justify-content: center;
   padding: 20px 0;
-  .commend,.collect,.share,.like{
+  .commend,
+  .collect,
+  .share,
+  .like {
     display: flex;
     flex-direction: column;
     align-items: center;
     margin: 20px;
-    i{
+    i {
       color: #ffa500;
       font-size: 37px;
     }
-    span{
+    span {
       font-size: 14px;
       color: #a699b3;
     }
-    .icon-dianzan{
+    .icon-dianzan {
       color: #ffa500;
       font-size: 35px;
       font-weight: 600;
